@@ -81,7 +81,7 @@ gchq.github.io/CyberChef/**
 
 **Finding:**
 
-> The URL and the attacker is using a trusted cloud storage service (storage.googleapis.com) to host a malicious site or files.\
+> The attacker is using a trusted cloud storage service (storage.googleapis.com) to host a malicious site or files.\
 > By hosting an innocent-looking HTML container on a trusted domain, threat actors bypass automated security filters that check links before a user clicks them. Once clicked. the hidden JavaScript executes to push the user toward a malicious destination.
 
 **IOC:**
@@ -167,6 +167,6 @@ The following indicators were identified:
 
 ---
 
-## 11. Conclusion
+## Conclusion
 
 > The analyzed email was determined to be a phishing attempt designed to steal credentials, multiple technical and behavioral indicators support this assessment. The identified IOCs should be added to appropriate security controls and used to search for additional instances of the campaign.
