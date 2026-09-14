@@ -1,8 +1,14 @@
 # Phishing Email Analysis
 
-Analysing real-life phishing emails to identify technical and social engineering indicators.
+Analysing a real-life phishing email to identify technical and social engineering indicators.
+Using OSINT tools to further learn about the place the phishing attempt came from.
+While searching OSINT tools found a "compromised" tool that now works as a malicious site redirecter. Used credible OSINT tools to analyse this finding.
 
-## Used tools
+---
+
+## Email section
+
+## Used tools in email analysis
 
 * [MITRE ATT&CK](https://attack.mitre.org/)
 * [urlscan.io](https://urlscan.io/)
@@ -12,7 +18,7 @@ Analysing real-life phishing emails to identify technical and social engineering
 
 ## Reporting
 
-Each case contains an analysis report covering some or all of these aspects:
+The cases contains an analysis report covering some or all of these aspects:
 
 * Email headers and authentication results
 * URL and domain analysis
@@ -23,7 +29,7 @@ Each case contains an analysis report covering some or all of these aspects:
 * Analyst assessment
 * Recommended response and investigation steps
 
-The reports are based primarily on static analysis of the provided emails. Findings that require dynamic analysis or additional telemetry are identified as such.
+The reports are based primarily on static analysis of the provided email. Findings that require dynamic analysis or additional telemetry are identified as such.
 
 ---
 
