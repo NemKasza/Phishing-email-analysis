@@ -34,13 +34,13 @@ Based on the combined email-header, URL, and social-engineering indicators, the 
 
 **Description:**
 
-> The email presents itself as a legitimate communication from a Cloud storage provider. However several source file artifacts and technical details indacate that this is a malicious phishing email.
+ The email presents itself as a legitimate communication from a Cloud storage provider. However several source file artifacts and technical details indacate that this is a malicious phishing email.
 
 ---
 
 ## Header Analysis
 
-### ARC analysis
+### Header & Authentication Analysis
 
 Indicators of potential malicious activity:\
 **Sender domain:** google-apple-amazon[.]chelsea[.]org[.]ferdaus[.]my
@@ -55,17 +55,14 @@ Possible brand-stuffing indicators. Attackers frequently register subdomains or 
 | Mechanism | Result |
 | --------- | ------ |
 | SPF       | Pass   |
-| DKIM      | None   |
-| DMARC     | None   |
 
 **Description:**
 
-> Email authentication results were reviewed to determine whether the sending infrastructure was authorized to send on behalf of the claimed domain.
+Email authentication results were reviewed to determine whether the sending infrastructure was authorized to send on behalf of the claimed domain.
 
 **Analyst Note:**
 
-> Authentication success does not by itself indicate that an email is legitimate. A threat actor may send phishing messages from infrastructure they control, including a legitimate or compromised domain.
-
+> SPF passed for the envelope sender domain google-apple-amazon.chelsea.org.ferdaus.my; however, this does not establish that the sender is legitimate because the authenticated domain does not correspond to the apparent Cloud storage brand.
 ---
 
 ## URL Analysis
@@ -79,10 +76,8 @@ gchq.github.io/CyberChef/**
 
 
 
-**Finding:**
-
-> The attacker is using a trusted cloud storage service (storage.googleapis.com) to host a malicious site or files.\
-> By hosting an innocent-looking HTML container on a trusted domain, threat actors bypass automated security filters that check links before a user clicks them. Once clicked. the hidden JavaScript executes to push the user toward a malicious destination.
+**Finding:**\
+The phishing links point to storage.googleapis.com, a legitimate Google-hosted domain, while embedding a long fragment containing obfuscated/randomized parameters and a reference to a second domain. The use of a trusted hosting domain may assist in bypassing simplistic URL reputation controls. Because the suspected destination appears after the # fragment, further dynamic analysis would be required to confirm whether client-side JavaScript processes the fragment and redirects the victim.
 
 **IOC:**
 
@@ -97,13 +92,15 @@ gchq.github.io/CyberChef/**
 ## Social Engineering Analysis
 
 The following indicators were identified:
+| Indicator             | Evidence                                | Risk                              |
+| --------------------- | --------------------------------------- | --------------------------------- |
+| Urgency               | "Final Notice", "immediate update"      | Encourages impulsive action       |
+| Threat                | Account suspension                      | Creates fear of losing access     |
+| Credential harvesting | "Update Account Now" CTA                | Attempts to induce authentication |
+| Brand impersonation   | Cloud branding                          | Establishes false legitimacy      |
+| URL deception         | Google-hosted URL + suspicious fragment | Obscures actual destination       |
+| Content obfuscation   | Hidden unrelated HTML                   | Potential filtering evasion       |
 
-- Urgency or time pressure
-- Threat of account suspension
-- Request for credentials
-- Suspicious branding
-- Bad grammar
-- Suspicious hyperlink
 
 **Description:**
 
@@ -111,33 +108,36 @@ The following indicators were identified:
 
 ---
 
-## Email body analysis (keyword stuffing)
+## Email body analysis / Hidden/Irrelevant Content: 
 
-> The email body contains hidden keywords and sentences (keyword stuffing). These techniques can help evade detection by bypassing email content checks by company scanners. Using partitions of a newsletter or particular keywords, imitating credible messages. is a way to evade scans.
+>The HTML body contains hidden elements (display:none) containing unrelated newsletter, news, travel, and gaming content. The presence of unrelated text and high-entropy/random strings within hidden HTML is inconsistent with the visible Cloud storage notification and may represent content-obfuscation or filtering-evasion behavior.
 
 ---
 
 ## Indicators of Compromise (IOCs)
 
-| Type   | Indicator                                                                                                                                                                             | Notes                      |
-| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
-| Email  | nooreply\@mqbixnjnvoq.us                                                                                                                                                              | Suspicious sender          |
-| Domain | storage.googleapis.com...                                                                                                                                                             | Suspicious sender domain   |
-| URL    | hxxps\://storage[.]googleapis[.]com/whilewait/brightway[.]html#ZX=zUxMCdQKLWkFpNYXqOXABCnFCaEo&5GpCEpBGTKy&256552/996/nbcwmooats[.]home[.]php=?sq=3D32-195982&lk=3D38563-5&page=3D368 | Credential-harvesting link |
-|        |                                                                                                                                                                                       |                            |
+| Type   | Indicator                                            | Classification                    |
+| ------ | ---------------------------------------------------- | --------------------------------- |
+| Email  | `nooreply[@]mqbixnjnvoq[.]us`                        | Suspicious sender                 |
+| Domain | `google-apple-amazon[.]chelsea[.]org[.]ferdaus[.]my` | Suspicious envelope-sender domain |
+| IP     | `89.43.67.40`                                        | Sending infrastructure            |
+| URL    | `hxxps://storage[.]googleapis[.]com/...`             | Phishing URL                      |
+| Domain | `[destination domain if dynamically confirmed]`      | Malicious destination             |
+
 
 ---
 
 ## MITRE ATT&CK Mapping
 
-| Technique                    | ID        | Evidence                           |
-| ---------------------------- | --------- | ---------------------------------- |
-| Phishing: Spearphishing Link | T1566.002 | Malicious link delivered via email |
-|                              |           |                                    |
+| Technique                                   | ID        | Evidence                                  | Confidence |
+| ------------------------------------------- | --------- | ----------------------------------------- | ---------- |
+| Phishing: Spearphishing Link                | T1566.002 | Malicious-looking URL delivered via email | High       |
+| Obfuscated/Compressed Files and Information | TBD       | Hidden/randomized HTML content            | Medium     |
+
 
 **Description:**
 
-> The observed behavior is consistent with MITRE ATT&CK technique T1566.002, Spearphishing Link, where a malicious link is delivered to the victim through email.
+> Only T1566.002 is confidently mapped from static evidence. Additional technique mapping would require dynamic analysis.
 
 ---
 
@@ -146,6 +146,9 @@ The following indicators were identified:
 **Verdict:** MALICIOUS
 
 **Severity:** MEDIUM
+
+
+> The message presents a credential-phishing risk but no evidence of successful credential submission, endpoint compromise, malware execution, or account takeover was identified during static analysis. Severity would increase if telemetry confirms user interaction, credential submission, or subsequent authentication anomalies.
 
 **Confidence:** HIGH
 
@@ -157,15 +160,33 @@ The following indicators were identified:
 
 ## Recommended Response
 
-1. Quarantine/remove the email from affected mailboxes.
-2. Block identified malicious domains and URLs.
-3. Search mail logs for additional recipients of the same campaign.
-4. Review authentication logs for users who interacted with the message.
-5. Reset credentials if compromise is suspected.
-6. Investigate affected endpoints for additional indicators.
-7. Develop a scanner for keyword stuffing attempts.
-
+### 1. Immediate containment
+- Quarantine the message.
+- Search for identical/similar messages.
+- Identify all recipients.
+- Block confirmed malicious URLs/domains where appropriate.
+### 2. User-impact investigation
+- Determine whether recipients clicked the URL.
+- Review proxy/DNS/browser telemetry.
+- Identify credential submissions.
+- Review authentication logs for anomalous sign-ins.
+### 3. Post-compromise investigation
+- Reset credentials if credential exposure is confirmed/suspected.
+- Revoke active sessions/tokens where appropriate.
+- Investigate affected endpoints.
+### 4. Detection improvement
+- Create SIEM/Email Security detections for:
+ - suspicious sender-domain patterns
+ - hidden HTML
+ - display:none content
+ - excessive random strings
+ - suspicious external links
+ - brand impersonation
 ---
+
+## Analysis Limitations
+
+This assessment was primarily based on static analysis of the supplied email. No evidence of successful credential submission, user interaction, endpoint compromise, or account takeover was available during analysis. Dynamic execution of the embedded URL was not used to establish the final destination or browser behavior. Therefore, conclusions regarding JavaScript execution, redirection, and credential harvesting should be treated as unconfirmed unless supported by sandbox, proxy, browser, or endpoint telemetry.
 
 ## Conclusion
 
