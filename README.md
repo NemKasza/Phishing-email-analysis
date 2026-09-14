@@ -44,7 +44,7 @@ Tools used:
 * [URLScan](https://urlscan.io/)  URL behavior, redirect, DNS, IP, and infrastructure analysis
 * [AbuseIPDB](https://www.abuseipdb.com/)  IP reputation and abuse report analysis
 * [MalwareTips](https://malwaretips.com/)  Public threat intelligence and malicious domain research
-* [My IP Neighbors](https://my-ip-neighbors.com/)  Infrastructure and OSINT lookup, also observed redirect behavior during investigation
+* [My IP Neighbors](https://my-ip-neighbors.com/)  Observed redirect behavior during investigation
 * [OSINT Framework](https://osintframework.com/)  OSINT tool discovery and source directory
 * [IPinfo](https://ipinfo.io/)  IP, ASN, ISP, geolocation, and hostname information
 * [Shodan](https://www.shodan.io/)  Internet exposed infrastructure and service reconnaissance
