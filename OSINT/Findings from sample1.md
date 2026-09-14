@@ -22,13 +22,13 @@ No suspicious URLs were directly accessed during the investigation.
 
 The following tools were used through the OSINT Framework and independently:
 
-* AbuseIPDB — IP reputation and abuse reports
-* VirusTotal — IP, domain and URL reputation
-* Shodan — exposed services and infrastructure
-* SynapsInt — OSINT and infrastructure correlation
-* IPVoid — IP reputation and blacklist checks
-* IPinfo — IP ownership, ASN, hostname and geolocation
-* OSINT Framework — discovery of relevant OSINT resources
+* AbuseIPDB | IP reputation and abuse reports
+* VirusTotal | IP, domain and URL reputation
+* Shodan | exposed services and infrastructure
+* SynapsInt | OSINT and infrastructure correlation
+* IPVoid | IP reputation and blacklist checks
+* IPinfo | IP ownership, ASN, hostname and geolocation
+* OSINT Framework | discovery of relevant OSINT resources
 
 ---
 
