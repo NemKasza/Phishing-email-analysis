@@ -32,9 +32,18 @@
 
 The email presents itself as a legitimate communication from a cloud storage provider. However, several source file artifacts and technical details indicate that this is a malicious phishing email.
 
+<img width="762" height="537" alt="Opened email : social engineering" src="https://github.com/user-attachments/assets/9671e525-42a1-4809-ad38-c41dab7f7e60" />
+
+
 ---
 
 ## Header Analysis
+
+<img width="632" height="410" alt="Email header source" src="https://github.com/user-attachments/assets/b7b15a07-157d-459b-94fb-197307b5b382" />
+
+<img width="635" height="491" alt="ARC Header" src="https://github.com/user-attachments/assets/40a393d3-ebe1-48dd-a42a-a49aa193189e" />
+
+
 
 ### Header & Authentication Analysis
 
@@ -108,6 +117,12 @@ The following indicators were identified:
 ## Email Body Analysis / Hidden/Irrelevant Content
 
 The HTML body contains hidden elements (`display:none`) containing unrelated newsletter, news, travel, and gaming content. The presence of unrelated text and high-entropy/random strings within hidden HTML is inconsistent with the visible cloud storage notification and may represent content-obfuscation or filtering-evasion behavior.
+
+<img width="759" height="489" alt="Hidden text : Keyword stuffing" src="https://github.com/user-attachments/assets/cb3d407f-2c10-4570-9d8b-314f12deece6" />
+
+<img width="471" height="494" alt="hidden keywords" src="https://github.com/user-attachments/assets/5d0cf283-0703-4b12-85d2-dd80cfcbb361" />
+
+
 
 ---
 
